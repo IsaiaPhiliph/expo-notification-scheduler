@@ -9,7 +9,9 @@ const prisma = new PrismaClient();
 
 const app = express();
 
-const sendNotifications = async (now: Date) => {
+const sendNotifications = async (now: Date | "manual") => {
+  if (now === "manual") return;
+
   const toSend = await prisma.notification.findMany({
     where: { sent: false, send: { lte: now } },
   });
